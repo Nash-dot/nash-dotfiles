@@ -1,0 +1,68 @@
+#!/bin/bash
+
+SOUND="/usr/share/sounds/freedesktop/stereo/bell.oga"
+NOTIFIED=""
+
+while true; do
+    BATTERY=$(cat /sys/class/power_supply/BAT0/capacity)
+    STATUS=$(cat /sys/class/power_supply/BAT0/status)
+
+    if [ "$STATUS" = "Discharging" ]; then
+
+        # Regular notifications - no sound
+        for LEVEL in 80 50 25; do
+            if [ "$BATTERY" -le "$LEVEL" ] && [[ "$NOTIFIED" != *"n$LEVEL"* ]]; then
+                NOTIFIED="$NOTIFIED n$LEVEL"
+                notify-send \
+                    --urgency="low" \
+                    --icon=battery \
+                    "Battery at ${BATTERY}%" \
+                    "Consider plugging in your charger"
+            fi
+        done
+
+        # Critical levels - single sound + urgent notification
+        for LEVEL in 10 5; do
+            if [ "$BATTERY" -le "$LEVEL" ] && [[ "$NOTIFIED" != *"c$LEVEL"* ]]; then
+                NOTIFIED="$NOTIFIED c$LEVEL"
+                paplay "$SOUND"
+                notify-send \
+                    --urgency="critical" \
+                    --icon=battery \
+                    "⚠️ Battery at ${BATTERY}%!" \
+                    "Please plug in your charger now"
+            fi
+        done
+
+        # Extremely critical - countdown and forced action
+        if [ "$BATTERY" -le "3" ] && [[ "$NOTIFIED" != *"countdown"* ]]; then
+            NOTIFIED="$NOTIFIED countdown"
+            paplay "$SOUND"
+
+            # Show urgent dialog with countdown
+            for i in 10 9 8 7 6 5 4 3 2 1; do
+                notify-send \
+                    --urgency="critical" \
+                    --icon=battery \
+                    "🔴 BATTERY CRITICAL!" \
+                    "Shutting down in ${i} seconds — plug in NOW!\nBattery: ${BATTERY}%"
+                sleep 1
+            done
+
+            # Check if still not charging after countdown
+            STATUS_CHECK=$(cat /sys/class/power_supply/BAT0/status)
+            if [ "$STATUS_CHECK" = "Discharging" ]; then
+                notify-send --urgency="critical" "Shutting down now to protect your system"
+                sleep 2
+                systemctl poweroff
+            fi
+        fi
+    fi
+
+    # Reset when charging
+    if [ "$STATUS" = "Charging" ]; then
+        NOTIFIED=""
+    fi
+
+    sleep 60
+done
