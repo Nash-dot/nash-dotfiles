@@ -1,103 +1,115 @@
-{
-  "_comment": "The waybar is kept simple. Network is connected to Orbit. For more changes refer waybar config.",
-  
-  
-  "layer": "top",
-  "exclusive": true,
-  "gtk-layer-shell": true,
-  "spacing": 0,
-  "height": 0,
-  "margin-bottom": 0,
-  "margin-top": 0,
-  "position": "bottom",
-  "margin-right": 500,
-  "margin-left": 500,
+  {
+    "name": "statusbar",
+    "layer": "top",
+    "position": "bottom",
+    "exclusive": true,
+    "gtk-layer-shell": true,
+    "spacing": 0,
+    "height": 0,
+    "margin-top": 0,
+    "margin-bottom": 0,
+    "margin-left": 500,
+    "margin-right": 500,
 
-  "modules-left": [
-    "sway/workspaces"
-  ],
-  "modules-center": [
-    "clock"
-  ],
-  "modules-right": [
-    "bluetooth",
-    "network",
-    "pulseaudio",
-    "battery",
-    "tray"
-  ],
+    "modules-left": [
+      "sway/workspaces"
+    ],
 
-  "sway/workspaces": {
-    "disable-scroll": true,
-    "all-outputs": false,
-    "tooltip": false
-  },
+    "modules-center": [
+      "clock"
+    ],
 
-  "clock": {
-    "format": "{:%B %d %a %I:%M %p}",
-    "format-alt": "{:%d-%m-%Y}",
-    "tooltip": false
-  },
+    "modules-right": [
+      "bluetooth",
+      "network",
+      "pulseaudio",
+      "battery",
+      "custom/sleep",
+      "custom/restart",
+      "custom/poweroff",
+      "tray"
+    ],
 
-  "bluetooth": {
-    "format": "󰂯",
-    "format-connected": "󰂱 {device_alias}",
-    "format-disabled": "󰂲",
-    "format-off": "󰂲 Off",
-    "tooltip-format": "{controller_alias}\nConnected: {num_connections}",
-    "tooltip-format-connected": "{device_enumerate}",
-    "tooltip": false,
-    "on-click": "orbit toggle --tab bluetooth"
-  },
-
-  "network": {
-    "format-wifi": "󰖩 {essid}",
-    "format-ethernet": "󰈀 Connected",
-    "format-disconnected": "󰖪 Disconnected",
-    "format-off": "󰖪  Off",
-    "interval": 5,
-    "tooltip-format-wifi": "Signal: {signalStrength}%\nIP: {ipaddr}\nDown: {bandwidthDownBits}\nUp: {bandwidthUpBits}",
-    "on-click": "orbit toggle --tab wifi"
-  },
-
-  "pulseaudio": {
-    "scroll-step": 5,
-    "max-volume": 150,
-    "format": "{icon} {volume}%",
-    "format-bluetooth": "󰂱 {volume}%",
-    "format-bluetooth-muted": "󰂱 Muted",
-    "format-muted": "󰝟 Muted",
-    "format-icons": {
-      "headphone": "󰋋",
-      "hands-free": "󰋋",
-      "headset": "󰋋",
-      "phone": "",
-      "portable": "",
-      "car": "",
-      "default": ["󰕿", "󰖀", "󰕾"]
+    "sway/workspaces": {
+      "disable-scroll": true,
+      "all-outputs": false,
+      "tooltip": false
     },
-    "tooltip-format": "{desc}\nVolume: {volume}%",
-    "on-click": "pavucontrol",
-    "on-hover": "",
-    "tooltip": false
-  },    
 
-   "battery": {
-    "states": {
-      "warning": 30,
-      "critical": 15
+    "clock": {
+      "format": "{:%B %d %a %I:%M %p}",
+      "format-alt": "{:%d-%m-%Y}",
+      "tooltip": false
     },
-    "format": "{icon} {capacity}%",
-    "format-charging": "󰂄 {capacity}%",
-    "format-plugged": "󰂄 {capacity}%",
-    "format-alt": "{icon} {time}",
-    "format-full": "󱈑 {capacity}%",
-    "format-icons": ["󱊡", "󱊢", "󱊣"],
-    "tooltip-format": "Battery: {capacity}%\nTime remaining: {time}"
-  },
 
-  "tray": {
-    "spacing": 10,
-    "tooltip": false
-  }
-}
+    "bluetooth": {
+      "format": "󰂯",
+      "format-connected": "󰂱 {device_alias}",
+      "format-disabled": "󰂲",
+      "format-off": "󰂲 Off",
+      "tooltip": false,
+      "on-click": "orbit toggle --tab bluetooth"
+    },
+
+    "network": {
+      "format-wifi": "󰖩 {essid}",
+      "format-ethernet": "󰈀 Connected",
+      "format-disconnected": "󰖪 Disconnected",
+      "format-off": "󰖪 Off",
+      "interval": 5,
+      "tooltip": false,
+      "on-click": "orbit toggle --tab wifi"
+    },
+
+    "pulseaudio": {
+      "scroll-step": 5,
+      "max-volume": 150,
+      "format": "{icon} {volume}%",
+      "format-muted": "󰝟 Muted",
+      "format-icons": {
+        "default": ["󰕿", "󰖀", "󰕾"]
+      },
+      "tooltip": false,
+      "on-click": "pavucontrol"
+    },
+
+    "battery": {
+      "states": {
+        "warning": 30,
+        "critical": 15
+      },
+      "format": "{icon} {capacity}%",
+      "format-charging": "󰂄 {capacity}%",
+      "format-icons": [
+        "󱊡",
+        "󱊢",
+        "󱊣"
+      ]
+    },
+    
+    "custom/sleep": {
+    "exec": "~/.config/waybar/scripts/sleep-info.sh",
+    "return-type": "json",
+    "interval": 3600,
+    "on-click": "~/.config/waybar/scripts/sleep.sh"
+    },
+
+    "custom/restart": {
+    "exec": "~/.config/waybar/scripts/restart-info.sh",
+    "return-type": "json",
+    "interval": 3600,
+    "on-click": "~/.config/waybar/scripts/restart.sh"
+    },
+
+    "custom/poweroff": {
+    "exec": "~/.config/waybar/scripts/poweroff-info.sh",
+    "return-type": "json",
+    "interval": 3600,
+    "on-click": "~/.config/waybar/scripts/poweroff.sh"
+    }, 
+
+    "tray": {
+      "spacing": 10,
+      "tooltip": false
+    }
+   }

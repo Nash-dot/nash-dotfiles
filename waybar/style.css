@@ -1,11 +1,6 @@
-* {
+window#waybar.statusbar {
   font-family: "Maple Mono NF";
-  border-radius: 8px;
   font-size: 13px;
-  padding: 0px;
-}
-
-window#waybar {
   background-color: #141216;
   border-radius: 14px;
   padding: 8px;
@@ -18,7 +13,10 @@ window#waybar {
 #clock,
 #tray,
 #workspaces,
-#pulseaudio {
+#pulseaudio,
+#custom-sleep,
+#custom-restart,
+#custom-poweroff {
   background-color: #2b2524;
   margin: 6px;
   margin-right: 0px;
@@ -29,13 +27,15 @@ window#waybar {
   transition-duration: 120ms;
 }
 
-/* hover many not work on all versions.*/
 #battery:hover,
 #network:hover,
 #bluetooth:hover,
 #clock:hover,
 #pulseaudio:hover,
-#tray:hover {
+#tray:hover,
+#custom-sleep:hover,
+#custom-restart:hover,
+#custom-poweroff:hover {
   background-color: #342d2c;
   color: #D89BA5;
 }
@@ -105,4 +105,20 @@ tooltip {
   color: #d9c8b5;
   border: 1px solid #5d4944;
   border-radius: 8px;
+}
+
+#custom-poweroff {
+  color: #b75a5a;
+}
+
+#custom-restart {
+  color: #d8a56b;
+}
+
+#custom-sleep {
+  color: #8A9A72;
+}
+
+window#waybar.powerbar #custom-sleep {
+  color: #8A9A72;
 }
