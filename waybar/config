@@ -8,8 +8,8 @@
     "height": 0,
     "margin-top": 0,
     "margin-bottom": 0,
-    "margin-left": 500,
-    "margin-right": 500,
+    "margin-left": 0,
+    "margin-right": 0,
 
     "modules-left": [
       "sway/workspaces"
@@ -24,9 +24,7 @@
       "network",
       "pulseaudio",
       "battery",
-      "custom/sleep",
-      "custom/restart",
-      "custom/poweroff",
+      "custom/power",
       "tray"
     ],
 
@@ -87,25 +85,10 @@
       ]
     },
     
-    "custom/sleep": {
-    "exec": "~/.config/waybar/scripts/sleep-info.sh",
-    "return-type": "json",
-    "interval": 3600,
-    "on-click": "~/.config/waybar/scripts/sleep.sh"
-    },
-
-    "custom/restart": {
-    "exec": "~/.config/waybar/scripts/restart-info.sh",
-    "return-type": "json",
-    "interval": 3600,
-    "on-click": "~/.config/waybar/scripts/restart.sh"
-    },
-
-    "custom/poweroff": {
-    "exec": "~/.config/waybar/scripts/poweroff-info.sh",
-    "return-type": "json",
-    "interval": 3600,
-    "on-click": "~/.config/waybar/scripts/poweroff.sh"
+    "custom/power": {
+    "format": "⏻",
+    "tooltip": false,
+    "on-click": "~/.config/waybar/scripts/power.sh"
     }, 
 
     "tray": {
